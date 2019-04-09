@@ -22,7 +22,7 @@ open class WSTagView: UIView {
     fileprivate let textLabel = UILabel()
     private let _tag: WSTag?
     let arrow = UIButton(frame: .zero).tap {
-        let bundle = NSBundle(forClass: self)
+        let bundle = Bundle(forClass: self)
         let dropdown = UIImage(named: "down-arrow", inBundle: bundle,compatibleWithTraitCollection: nil)!
         $0.setImage(dropdown, for: .normal)
     }
