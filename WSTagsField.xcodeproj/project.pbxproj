@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		125AC6EC1F14D13F00137101 /* BackspaceDetectingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AC6EB1F14D13F00137101 /* BackspaceDetectingTextField.swift */; };
 		125AC6EF1F14D6A600137101 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AC6EE1F14D6A600137101 /* Constants.swift */; };
-		4ED3A4ED225C513C00E6F634 /* down-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ED3A4EC225C513C00E6F634 /* down-arrow.png */; };
+		4ED3A4EF225C5EE700E6F634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4ED3A4EE225C5EE700E6F634 /* Assets.xcassets */; };
 		D77F81B31D2A957400E6FF3E /* WSTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F81B01D2A957400E6FF3E /* WSTag.swift */; };
 		D77F81B41D2A957400E6FF3E /* WSTagsField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F81B11D2A957400E6FF3E /* WSTagsField.swift */; };
 		D77F81B51D2A957400E6FF3E /* WSTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F81B21D2A957400E6FF3E /* WSTagView.swift */; };
@@ -31,7 +31,7 @@
 /* Begin PBXFileReference section */
 		125AC6EB1F14D13F00137101 /* BackspaceDetectingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackspaceDetectingTextField.swift; path = Source/BackspaceDetectingTextField.swift; sourceTree = SOURCE_ROOT; };
 		125AC6EE1F14D6A600137101 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Source/Constants.swift; sourceTree = SOURCE_ROOT; };
-		4ED3A4EC225C513C00E6F634 /* down-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down-arrow.png"; sourceTree = "<group>"; };
+		4ED3A4EE225C5EE700E6F634 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D77F81B01D2A957400E6FF3E /* WSTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WSTag.swift; path = Source/WSTag.swift; sourceTree = SOURCE_ROOT; };
 		D77F81B11D2A957400E6FF3E /* WSTagsField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WSTagsField.swift; path = Source/WSTagsField.swift; sourceTree = SOURCE_ROOT; };
 		D77F81B21D2A957400E6FF3E /* WSTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WSTagView.swift; path = Source/WSTagView.swift; sourceTree = SOURCE_ROOT; };
@@ -88,9 +88,9 @@
 				D78C9FF41D2A6AFD004F4BFF /* Info.plist */,
 				D77F81B01D2A957400E6FF3E /* WSTag.swift */,
 				D78C9FF21D2A6AFD004F4BFF /* WSTagsField.h */,
-				4ED3A4EC225C513C00E6F634 /* down-arrow.png */,
 				D77F81B11D2A957400E6FF3E /* WSTagsField.swift */,
 				D77F81B21D2A957400E6FF3E /* WSTagView.swift */,
+				4ED3A4EE225C5EE700E6F634 /* Assets.xcassets */,
 			);
 			path = WSTagsField;
 			sourceTree = "<group>";
@@ -198,7 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ED3A4ED225C513C00E6F634 /* down-arrow.png in Resources */,
+				4ED3A4EF225C5EE700E6F634 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

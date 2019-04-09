@@ -13,5 +13,6 @@ Pod::Spec.new do |s|
   s.swift_version = '4.2'
 
   s.source_files = 'WSTagsField/*.{h}', 'Source/**/*.{h,swift}'
+  s.resources = "WSTagsField/*.xcassets"
   s.frameworks = 'UIKit'
 end
