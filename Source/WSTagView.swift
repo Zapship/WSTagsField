@@ -22,8 +22,8 @@ open class WSTagView: UIView {
     fileprivate let textLabel = UILabel()
     private let _tag: WSTag?
     let arrow = UIButton(frame: .zero).tap {
-        let bundle = Bundle(forClass: WSTagView)
-        let dropdown = UIImage(named: "down-arrow", inBundle: bundle,compatibleWithTraitCollection: nil)!
+        let bundle = Bundle(for: WSTagView.self)
+        let dropdown = UIImage(named: "down-arrow", in: bundle,compatibleWith: nil)!
         $0.setImage(dropdown, for: .normal)
     }
 
