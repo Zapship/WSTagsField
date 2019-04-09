@@ -10,7 +10,7 @@
 		125AC6EC1F14D13F00137101 /* BackspaceDetectingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AC6EB1F14D13F00137101 /* BackspaceDetectingTextField.swift */; };
 		125AC6EF1F14D6A600137101 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AC6EE1F14D6A600137101 /* Constants.swift */; };
 		4ED3A4EF225C5EE700E6F634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4ED3A4EE225C5EE700E6F634 /* Assets.xcassets */; };
-		4ED3A4F4225CD9A200E6F634 /* ItemSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED3A4F3225CD9A200E6F634 /* ItemSelectorViewController.swift */; };
+		4ED3A4F6225CE28300E6F634 /* ItemSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED3A4F5225CE28300E6F634 /* ItemSelectorViewController.swift */; };
 		D77F81B31D2A957400E6FF3E /* WSTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F81B01D2A957400E6FF3E /* WSTag.swift */; };
 		D77F81B41D2A957400E6FF3E /* WSTagsField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F81B11D2A957400E6FF3E /* WSTagsField.swift */; };
 		D77F81B51D2A957400E6FF3E /* WSTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F81B21D2A957400E6FF3E /* WSTagView.swift */; };
@@ -33,7 +33,7 @@
 		125AC6EB1F14D13F00137101 /* BackspaceDetectingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackspaceDetectingTextField.swift; path = Source/BackspaceDetectingTextField.swift; sourceTree = SOURCE_ROOT; };
 		125AC6EE1F14D6A600137101 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Source/Constants.swift; sourceTree = SOURCE_ROOT; };
 		4ED3A4EE225C5EE700E6F634 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4ED3A4F3225CD9A200E6F634 /* ItemSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectorViewController.swift; sourceTree = "<group>"; };
+		4ED3A4F5225CE28300E6F634 /* ItemSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemSelectorViewController.swift; path = Source/ItemSelectorViewController.swift; sourceTree = SOURCE_ROOT; };
 		D77F81B01D2A957400E6FF3E /* WSTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WSTag.swift; path = Source/WSTag.swift; sourceTree = SOURCE_ROOT; };
 		D77F81B11D2A957400E6FF3E /* WSTagsField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WSTagsField.swift; path = Source/WSTagsField.swift; sourceTree = SOURCE_ROOT; };
 		D77F81B21D2A957400E6FF3E /* WSTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WSTagView.swift; path = Source/WSTagView.swift; sourceTree = SOURCE_ROOT; };
@@ -85,6 +85,7 @@
 		D78C9FF11D2A6AFD004F4BFF /* WSTagsField */ = {
 			isa = PBXGroup;
 			children = (
+				4ED3A4F5225CE28300E6F634 /* ItemSelectorViewController.swift */,
 				125AC6EB1F14D13F00137101 /* BackspaceDetectingTextField.swift */,
 				125AC6EE1F14D6A600137101 /* Constants.swift */,
 				D78C9FF41D2A6AFD004F4BFF /* Info.plist */,
@@ -93,7 +94,6 @@
 				D77F81B11D2A957400E6FF3E /* WSTagsField.swift */,
 				D77F81B21D2A957400E6FF3E /* WSTagView.swift */,
 				4ED3A4EE225C5EE700E6F634 /* Assets.xcassets */,
-				4ED3A4F3225CD9A200E6F634 /* ItemSelectorViewController.swift */,
 			);
 			path = WSTagsField;
 			sourceTree = "<group>";
@@ -236,7 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ED3A4F4225CD9A200E6F634 /* ItemSelectorViewController.swift in Sources */,
+				4ED3A4F6225CE28300E6F634 /* ItemSelectorViewController.swift in Sources */,
 				125AC6EF1F14D6A600137101 /* Constants.swift in Sources */,
 				D77F81B31D2A957400E6FF3E /* WSTag.swift in Sources */,
 				D77F81B41D2A957400E6FF3E /* WSTagsField.swift in Sources */,
