@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
   s.source_files = 'WSTagsField/*.{h}', 'Source/**/*.{h,swift}'
   s.resources = "WSTagsField/*.xcassets"
   s.frameworks = 'UIKit'
+  s.dependency 'ContextMenu'
 end

@@ -108,6 +108,7 @@ open class WSTagView: UIView {
         addSubview(textLabel)
         if (tag.hasMoreOptions) {
             addSubview(arrow)
+            arrow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMoreOptions)))
         }
 
         self.displayText = tag.text
@@ -222,6 +223,9 @@ open class WSTagView: UIView {
         onDidRequestSelection?(self)
     }
 
+    @objc func handleTapMoreOptions(_ sender: UITapGestureRecognizer) {
+        print("DID TAP MORE")
+    }
 }
 
 extension WSTagView: UIKeyInput {
