@@ -201,6 +201,8 @@ open class WSTagsField: UIScrollView {
     /// Called before a tag is added to the tag list. Here you return false to discard tags you do not want to allow.
     open var onValidateTag: ((WSTag, [WSTag]) -> Bool)?
 
+    open var onDidSelectAnotherOptionForTag: ((_ tagView: WSTagView, _ oldTag: WSTag, _ newTag: WSTag) -> Void)?
+
     /**
      * Called when the user attempts to press the Return key with text partially typed.
      * @return A Tag for a match (typically the first item in the matching results),
@@ -378,11 +380,15 @@ open class WSTagsField: UIScrollView {
             }
         }
 
+        tagView.onDidSelectOtherOption = {[weak self] tagView, oldTag, newTag in
+            self?.onDidSelectAnotherOptionForTag?(tagView, oldTag, newTag)
+        }
+
         self.tagViews.append(tagView)
         addSubview(tagView)
 
         self.textField.text = ""
-        
+
         onDidAddTag?(self, tag)
 
         // Clearing text programmatically doesn't call this automatically

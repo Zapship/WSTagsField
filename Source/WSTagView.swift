@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ContextMenu
 
 protocol Tapable: class {}
 extension Tapable {
@@ -20,7 +21,12 @@ extension NSObject: Tapable {}
 
 open class WSTagView: UIView {
     fileprivate let textLabel = UILabel()
-    private let _tag: WSTag?
+    private var _tag: WSTag? {
+        didSet {
+            self.displayText = _tag?.text ?? ""
+            updateLabelText()
+        }
+    }
     let arrow = UIButton(frame: .zero).tap {
         let bundle = Bundle(for: WSTagView.self)
         let dropdown = UIImage(named: "down-arrow", in: bundle,compatibleWith: nil)!
@@ -76,6 +82,8 @@ open class WSTagView: UIView {
     internal var onDidRequestDelete: ((_ tagView: WSTagView, _ replacementText: String?) -> Void)?
     internal var onDidRequestSelection: ((_ tagView: WSTagView) -> Void)?
     internal var onDidInputText: ((_ tagView: WSTagView, _ text: String) -> Void)?
+
+    public var onDidSelectOtherOption: ((_ tagView: WSTagView, _ oldTag: WSTag, _ newTag: WSTag) -> Void)?
 
     open var selected: Bool = false {
         didSet {
@@ -224,7 +232,26 @@ open class WSTagView: UIView {
     }
 
     @objc func handleTapMoreOptions(_ sender: UITapGestureRecognizer) {
-        print("DID TAP MORE")
+        guard let parentViewcontroller = parentViewController else { return }
+        let emailSelector = ItemSelectorViewController<String>()
+        emailSelector.delegate = self
+        emailSelector.items = self._tag?.otherOptions ?? []
+        ContextMenu.shared.show(
+            sourceViewController: parentViewcontroller,
+            viewController: emailSelector,
+            options: ContextMenu.Options(menuStyle: .minimal),
+            sourceView: sender.view)
+    }
+
+    private var parentViewController: UIViewController? {
+        weak var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
 }
 
@@ -258,4 +285,13 @@ extension WSTagView: UITextInputTraits {
         set { }
     }
 
+}
+
+extension WSTagView: ItemSelectorDelegate {
+    func didSelectOtherOption(tag: String) {
+        self.parentViewController?.dismiss(animated: true, completion: nil)
+        let oldTag = self._tag
+        self._tag = WSTag(tag, otherOptions: [self._tag!.text] + (self._tag!.otherOptions ?? []).filter({ $0 != tag }))
+        self.onDidSelectOtherOption?(self, oldTag!, self._tag!)
+    }
 }

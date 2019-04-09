@@ -12,7 +12,7 @@ public struct WSTag: Hashable {
 
     public let text: String
     public let hasMoreOptions: Bool
-    private let otherOptions: [String]?
+    public let otherOptions: [String]?
 
     public init(_ text: String, otherOptions: [String]? = []) {
         self.text = text
