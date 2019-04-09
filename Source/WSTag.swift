@@ -11,9 +11,13 @@ import Foundation
 public struct WSTag: Hashable {
 
     public let text: String
+    public let hasMoreOptions: Bool
+    private let otherOptions: [String]?
 
-    public init(_ text: String) {
+    public init(_ text: String, otherOptions: [String]? = []) {
         self.text = text
+        self.otherOptions = otherOptions
+        self.hasMoreOptions = otherOptions != nil && otherOptions!.count > 0
     }
 
     public var hashValue: Int {

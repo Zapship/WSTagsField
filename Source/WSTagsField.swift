@@ -14,8 +14,19 @@ public enum WSTagAcceptOption {
     case space
 }
 
+internal struct Constants {
+    internal static let TEXT_FIELD_HSPACE: CGFloat = 6.0
+    internal static let MINIMUM_TEXTFIELD_WIDTH: CGFloat = 56.0
+    internal static let STANDARD_ROW_HEIGHT: CGFloat = 25.0
+}
+
 open class WSTagsField: UIScrollView {
-    fileprivate let textField = BackspaceDetectingTextField()
+    let textField = BackspaceDetectingTextField()
+    let autocompleteTableView = UITableView().tap {
+        $0.rowHeight = 75
+        $0.separatorStyle = .none
+        $0.isHidden = true
+    }
 
     /// Dedicated text field delegate.
     open weak var textDelegate: UITextFieldDelegate?
@@ -28,21 +39,21 @@ open class WSTagsField: UIScrollView {
     }
 
     /// Text color for tag view in normal (non-selected) state.
-    open var textColor: UIColor? {
+    @objc open var textColor: UIColor? {
         didSet {
             tagViews.forEach { $0.textColor = self.textColor }
         }
     }
 
     /// Background color for tag view in normal (selected) state.
-    open var selectedColor: UIColor? {
+    @objc open var selectedColor: UIColor? {
         didSet {
             tagViews.forEach { $0.selectedColor = self.selectedColor }
         }
     }
 
     /// Text color for tag view in normal (selected) state.
-    open var selectedTextColor: UIColor? {
+    @objc open var selectedTextColor: UIColor? {
         didSet {
             tagViews.forEach { $0.selectedTextColor = self.selectedTextColor }
         }
@@ -75,30 +86,9 @@ open class WSTagsField: UIScrollView {
             repositionViews()
         }
     }
-    
+
     /// Whether or not the WSTagsField should become scrollable
     open var enableScrolling: Bool = true
-
-    @available(*, unavailable, message: "Use 'cornerRadius' instead.")
-    open var tagCornerRadius: CGFloat = 3.0
-
-    open var cornerRadius: CGFloat = 3.0 {
-        didSet {
-            tagViews.forEach { $0.cornerRadius = self.cornerRadius }
-        }
-    }
-
-    open var borderWidth: CGFloat = 0.0 {
-        didSet {
-            tagViews.forEach { $0.borderWidth = self.borderWidth }
-        }
-    }
-
-    open var borderColor: UIColor? {
-        didSet {
-            if let borderColor = borderColor { tagViews.forEach { $0.borderColor = borderColor } }
-        }
-    }
 
     open override var layoutMargins: UIEdgeInsets {
         didSet {
@@ -106,7 +96,7 @@ open class WSTagsField: UIScrollView {
         }
     }
 
-    open var fieldTextColor: UIColor? {
+    @objc open var fieldTextColor: UIColor? {
         didSet {
             textField.textColor = fieldTextColor
         }
@@ -133,7 +123,7 @@ open class WSTagsField: UIScrollView {
         }
     }
 
-    open var font: UIFont? {
+    @objc open var font: UIFont? {
         didSet {
             textField.font = font
             tagViews.forEach { $0.font = self.font }
@@ -277,6 +267,7 @@ open class WSTagsField: UIScrollView {
     // MARK: -
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        self.autocompleteTableView.register(cellWithClass: ContactResultCell.self)
         internalInit()
     }
 
@@ -298,6 +289,11 @@ open class WSTagsField: UIScrollView {
         repositionViews()
     }
 
+    open override func didMoveToWindow() {
+        super.didMoveToWindow()
+        self.window?.addSubview(self.autocompleteTableView)
+    }
+
     open override func layoutSubviews() {
         super.layoutSubviews()
         repositionViews()
@@ -306,7 +302,7 @@ open class WSTagsField: UIScrollView {
     /// Take the text inside of the field and make it a Tag.
     open func acceptCurrentTextAsTag() {
         if let currentText = tokenizeTextFieldText(),
-           (self.textField.text?.isEmpty ?? true) == false {
+            (self.textField.text?.isEmpty ?? true) == false {
             self.addTag(currentText)
         }
     }
@@ -321,12 +317,12 @@ open class WSTagsField: UIScrollView {
     }
 
     open func endEditing() {
-        // NOTE: We used to check if .isFirstResponder and then resign first responder, but sometimes we noticed 
-        // that it would be the first responder, but still return isFirstResponder=NO. 
+        // NOTE: We used to check if .isFirstResponder and then resign first responder, but sometimes we noticed
+        // that it would be the first responder, but still return isFirstResponder=NO.
         // So always attempt to resign without checking.
         self.textField.resignFirstResponder()
     }
-    
+
     open override func reloadInputViews() {
         self.textField.reloadInputViews()
     }
@@ -361,9 +357,6 @@ open class WSTagsField: UIScrollView {
         tagView.selectedColor = self.selectedColor
         tagView.selectedTextColor = self.selectedTextColor
         tagView.displayDelimiter = self.isDelimiterVisible ? self.delimiter : ""
-        tagView.cornerRadius = self.cornerRadius
-        tagView.borderWidth = self.borderWidth
-        tagView.borderColor = self.borderColor
         tagView.keyboardAppearanceType = self.keyboardAppearance
         tagView.layoutMargins = self.layoutMargins
 
@@ -396,6 +389,7 @@ open class WSTagsField: UIScrollView {
         addSubview(tagView)
 
         self.textField.text = ""
+        tagView.applyStylingISS()
         onDidAddTag?(self, tag)
 
         // Clearing text programmatically doesn't call this automatically
@@ -452,6 +446,11 @@ open class WSTagsField: UIScrollView {
     // MARK: - Actions
 
     @objc open func onTextFieldDidChange(_ sender: AnyObject) {
+        if textField.text?.isEmpty ?? true {
+            self.autocompleteTableView.isHidden = true
+        } else {
+            self.autocompleteTableView.isHidden = false
+        }
         onDidChangeText?(self, textField.text)
     }
 
@@ -586,6 +585,7 @@ extension WSTagsField {
         textField.delegate = self
         textField.font = font
         textField.textColor = fieldTextColor
+        textField.tintColor = .black
         addSubview(textField)
 
         layerBoundsObserver = self.observe(\.layer.bounds, options: [.old, .new]) { [weak self] sender, change in
@@ -713,11 +713,15 @@ extension WSTagsField {
             oldIntrinsicContentHeight = newIntrinsicContentHeight
         }
 
-        if self.enableScrolling {        
+        if self.enableScrolling {
             self.isScrollEnabled = contentRect.height + contentInset.top + contentInset.bottom >= newIntrinsicContentHeight
         }
         self.contentSize.width = self.bounds.width - contentInset.left - contentInset.right
         self.contentSize.height = contentRect.height
+
+        let frameRelativeToWindow = self.convert(self.frame, to: nil)
+        let bottomOfSelf = frameRelativeToWindow.origin.y + frame.size.height
+        self.autocompleteTableView.frame = CGRect(x: 0, y: bottomOfSelf, width: (self.window?.size.width ?? 0), height: (self.window?.size.height ?? 0) - bottomOfSelf)
 
         if self.isScrollEnabled {
             // FIXME: this isn't working. Need to think in a workaround.

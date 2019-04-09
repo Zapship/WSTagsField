@@ -10,6 +10,12 @@ import UIKit
 
 open class WSTagView: UIView {
     fileprivate let textLabel = UILabel()
+    private let _tag: WSTag?
+    let arrow = UIButton(frame: .zero).tap {
+        $0.styleClassISS = "dropdown-arrow"
+        let dropdown = Asset.dropdownArrow.image.filled(withColor: UIColor(hex: 0x627282)!)
+        $0.setImage(dropdown, for: .normal)
+    }
 
     open var displayText: String = "" {
         didSet {
@@ -29,27 +35,6 @@ open class WSTagView: UIView {
         didSet {
             textLabel.font = font
             setNeedsDisplay()
-        }
-    }
-
-    open var cornerRadius: CGFloat = 3.0 {
-        didSet {
-            self.layer.cornerRadius = cornerRadius
-            setNeedsDisplay()
-        }
-    }
-    open var borderWidth: CGFloat = 0.0 {
-        didSet {
-            self.layer.borderWidth = borderWidth
-            setNeedsDisplay()
-        }
-    }
-    open var borderColor: UIColor? {
-        didSet {
-            if let borderColor = borderColor {
-                self.layer.borderColor = borderColor.cgColor
-                setNeedsDisplay()
-            }
         }
     }
 
@@ -81,19 +66,20 @@ open class WSTagView: UIView {
             if selected && !isFirstResponder {
                 _ = becomeFirstResponder()
             } else
-            if !selected && isFirstResponder {
-                _ = resignFirstResponder()
+                if !selected && isFirstResponder {
+                    _ = resignFirstResponder()
             }
             updateContent(animated: true)
         }
     }
 
     public init(tag: WSTag) {
+        self._tag = tag
         super.init(frame: CGRect.zero)
         self.backgroundColor = tintColor
+        self.yoga.isEnabled = false
         self.layer.cornerRadius = cornerRadius
         self.layer.masksToBounds = true
-
         textColor = .white
         selectedColor = .gray
         selectedTextColor = .black
@@ -103,6 +89,9 @@ open class WSTagView: UIView {
         textLabel.textColor = .white
         textLabel.backgroundColor = .clear
         addSubview(textLabel)
+        if (tag.hasMoreOptions) {
+            addSubview(arrow)
+        }
 
         self.displayText = tag.text
         updateLabelText()
@@ -113,6 +102,7 @@ open class WSTagView: UIView {
     }
 
     public required init?(coder aDecoder: NSCoder) {
+        self._tag = nil
         super.init(coder: aDecoder)
         assert(false, "Not implemented")
     }
@@ -149,7 +139,7 @@ open class WSTagView: UIView {
     // MARK: - Size Measurements
     open override var intrinsicContentSize: CGSize {
         let labelIntrinsicSize = textLabel.intrinsicContentSize
-        return CGSize(width: labelIntrinsicSize.width + layoutMargins.left + layoutMargins.right,
+        return CGSize(width: labelIntrinsicSize.width + layoutMargins.left + layoutMargins.right + (self._tag?.hasMoreOptions ?? false ? 15 : 0),
                       height: labelIntrinsicSize.height + layoutMargins.top + layoutMargins.bottom)
     }
 
@@ -184,6 +174,7 @@ open class WSTagView: UIView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         textLabel.frame = bounds.inset(by: layoutMargins)
+        arrow.frame = CGRect(x: textLabel.frame.origin.x + textLabel.intrinsicContentSize.width + 5.0, y: frame.size.height/2 - 5, width: 10, height: 10)
         if frame.width == 0 || frame.height == 0 {
             frame.size = self.intrinsicContentSize
         }
