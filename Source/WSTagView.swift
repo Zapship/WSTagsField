@@ -8,12 +8,22 @@
 
 import UIKit
 
+protocol Tapable: class {}
+extension Tapable {
+    func tap(_ block: (Self) -> Void) -> Self {
+        block(self)
+        return self
+    }
+}
+
+extension NSObject: Tapable {}
+
 open class WSTagView: UIView {
     fileprivate let textLabel = UILabel()
     private let _tag: WSTag?
     let arrow = UIButton(frame: .zero).tap {
-        $0.styleClassISS = "dropdown-arrow"
-        let dropdown = Asset.dropdownArrow.image.filled(withColor: UIColor(hex: 0x627282)!)
+        let bundle = NSBundle(forClass: self)
+        let dropdown = UIImage(named: "down-arrow", inBundle: bundle,compatibleWithTraitCollection: nil)!
         $0.setImage(dropdown, for: .normal)
     }
 
@@ -40,6 +50,12 @@ open class WSTagView: UIView {
 
     open override var tintColor: UIColor! {
         didSet { updateContent(animated: false) }
+    }
+
+    @objc open var cornerRadius: CGFloat = 1.0 {
+        didSet {
+            updateContent(animated: false)
+        }
     }
 
     /// Background color to be used for selected state.
@@ -77,9 +93,10 @@ open class WSTagView: UIView {
         self._tag = tag
         super.init(frame: CGRect.zero)
         self.backgroundColor = tintColor
-        self.yoga.isEnabled = false
-        self.layer.cornerRadius = cornerRadius
         self.layer.masksToBounds = true
+        self.layer.cornerRadius = 8.0
+        self.layer.borderWidth = 1.0
+        self.layer.borderColor = UIColor(red: 233/255.0, green: 234/255.0, blue: 240/255.0, alpha: 1.0).cgColor
         textColor = .white
         selectedColor = .gray
         selectedTextColor = .black

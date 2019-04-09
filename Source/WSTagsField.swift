@@ -14,15 +14,9 @@ public enum WSTagAcceptOption {
     case space
 }
 
-internal struct Constants {
-    internal static let TEXT_FIELD_HSPACE: CGFloat = 6.0
-    internal static let MINIMUM_TEXTFIELD_WIDTH: CGFloat = 56.0
-    internal static let STANDARD_ROW_HEIGHT: CGFloat = 25.0
-}
-
 open class WSTagsField: UIScrollView {
-    let textField = BackspaceDetectingTextField()
-    let autocompleteTableView = UITableView().tap {
+    public let textField = BackspaceDetectingTextField()
+    public let autocompleteTableView = UITableView().tap {
         $0.rowHeight = 75
         $0.separatorStyle = .none
         $0.isHidden = true
@@ -267,7 +261,6 @@ open class WSTagsField: UIScrollView {
     // MARK: -
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        self.autocompleteTableView.register(cellWithClass: ContactResultCell.self)
         internalInit()
     }
 
@@ -389,7 +382,7 @@ open class WSTagsField: UIScrollView {
         addSubview(tagView)
 
         self.textField.text = ""
-        tagView.applyStylingISS()
+        
         onDidAddTag?(self, tag)
 
         // Clearing text programmatically doesn't call this automatically
@@ -721,7 +714,7 @@ extension WSTagsField {
 
         let frameRelativeToWindow = self.convert(self.frame, to: nil)
         let bottomOfSelf = frameRelativeToWindow.origin.y + frame.size.height
-        self.autocompleteTableView.frame = CGRect(x: 0, y: bottomOfSelf, width: (self.window?.size.width ?? 0), height: (self.window?.size.height ?? 0) - bottomOfSelf)
+        self.autocompleteTableView.frame = CGRect(x: 0, y: bottomOfSelf, width: (self.window?.bounds.size.width ?? 0), height: (self.window?.bounds.size.height ?? 0) - bottomOfSelf)
 
         if self.isScrollEnabled {
             // FIXME: this isn't working. Need to think in a workaround.
