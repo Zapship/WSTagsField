@@ -87,6 +87,9 @@ open class WSTagView: UIView {
 
     open var selected: Bool = false {
         didSet {
+            if oldValue == selected {
+                return
+            }
             if selected && !isFirstResponder {
                 _ = becomeFirstResponder()
             } else
