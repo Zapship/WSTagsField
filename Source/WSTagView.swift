@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import ContextMenu
+import ContextMenu
 
 protocol Tapable: class {}
 extension Tapable {
