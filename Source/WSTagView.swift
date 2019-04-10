@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ContextMenu
+//import ContextMenu
 
 protocol Tapable: class {}
 extension Tapable {
@@ -234,7 +234,7 @@ open class WSTagView: UIView {
     }
 
     @objc func handleTapMoreOptions(_ sender: UITapGestureRecognizer) {
-        guard let otherOptions = self._tag.otherOptions, !otherOptions.isEmpty else { return }
+        guard let otherOptions = self._tag?.otherOptions, !otherOptions.isEmpty else { return }
         guard let parentViewcontroller = parentViewController else { return }
         let emailSelector = ItemSelectorViewController<String>()
         emailSelector.delegate = self
