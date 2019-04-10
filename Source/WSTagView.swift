@@ -29,7 +29,7 @@ open class WSTagView: UIView {
     }
     let arrow = UIButton(frame: .zero).tap {
         let bundle = Bundle(for: WSTagView.self)
-        let dropdown = UIImage(named: "down-arrow", in: bundle,compatibleWith: nil)!
+        let dropdown = UIImage(named: "down-arrow", in: bundle, compatibleWith: nil)!
         $0.setImage(dropdown, for: .normal)
     }
 
@@ -114,7 +114,7 @@ open class WSTagView: UIView {
         textLabel.textColor = .white
         textLabel.backgroundColor = .clear
         addSubview(textLabel)
-        if (tag.hasMoreOptions) {
+        if !tag.otherOptions.isEmpty {
             addSubview(arrow)
             arrow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMoreOptions)))
         }
@@ -165,7 +165,7 @@ open class WSTagView: UIView {
     // MARK: - Size Measurements
     open override var intrinsicContentSize: CGSize {
         let labelIntrinsicSize = textLabel.intrinsicContentSize
-        return CGSize(width: labelIntrinsicSize.width + layoutMargins.left + layoutMargins.right + (self._tag?.hasMoreOptions ?? false ? 15 : 0),
+        return CGSize(width: labelIntrinsicSize.width + layoutMargins.left + layoutMargins.right + (self._tag?.otherOptions.isEmpty ?? true ? 0 : 15),
                       height: labelIntrinsicSize.height + layoutMargins.top + layoutMargins.bottom)
     }
 
@@ -290,8 +290,11 @@ extension WSTagView: UITextInputTraits {
 extension WSTagView: ItemSelectorDelegate {
     func didSelectOtherOption(tag: String) {
         self.parentViewController?.dismiss(animated: true, completion: nil)
-        let oldTag = self._tag
-        self._tag = WSTag(tag, otherOptions: [self._tag!.text] + (self._tag!.otherOptions ?? []).filter({ $0 != tag }))
-        self.onDidSelectOtherOption?(self, oldTag!, self._tag!)
+        guard let oldTag = self._tag else { return }
+        self._tag = WSTag(
+            id: oldTag.id,
+            text: tag,
+            otherOptions: [oldTag.text] + oldTag.otherOptions.filter { $0 != tag })
+        self.onDidSelectOtherOption?(self, oldTag, self._tag!)
     }
 }

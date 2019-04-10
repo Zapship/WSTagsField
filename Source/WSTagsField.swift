@@ -332,14 +332,14 @@ open class WSTagsField: UIScrollView {
     }
 
     open func addTag(_ tag: String) {
-        addTag(WSTag(tag))
+        addTag(WSTag(id: tag, text: tag))
     }
 
     open func addTag(_ tag: WSTag) {
 
         if let onValidateTag = onValidateTag, !onValidateTag(tag, self.tags) {
             return
-        } else if self.tags.contains(tag) {
+        } else if self.tags.contains(where: { $0.id == tag.id }) {
             return
         }
 
@@ -398,12 +398,9 @@ open class WSTagsField: UIScrollView {
         repositionViews()
     }
 
-    open func removeTag(_ tag: String) {
-        removeTag(WSTag(tag))
-    }
 
-    open func removeTag(_ tag: WSTag) {
-        if let index = self.tags.index(of: tag) {
+    open func removeTag(_ id: String) {
+        if let index = self.tags.firstIndex(where: { $0.id == id }) {
             removeTagAtIndex(index)
         }
     }
@@ -431,7 +428,7 @@ open class WSTagsField: UIScrollView {
     open func tokenizeTextFieldText() -> WSTag? {
         let text = self.textField.text?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         if text.isEmpty == false && (onVerifyTag?(self, text) ?? true) {
-            let tag = WSTag(text)
+            let tag = WSTag(id: text, text: text)
             addTag(tag)
 
             self.textField.text = ""

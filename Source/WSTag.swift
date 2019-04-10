@@ -8,28 +8,15 @@
 
 import Foundation
 
-public struct WSTag: Hashable {
+public struct WSTag {
 
+    public let id: String
     public let text: String
-    public let hasMoreOptions: Bool
-    public let otherOptions: [String]?
+    public let otherOptions: [String]
 
-    public init(_ text: String, otherOptions: [String]? = []) {
+    public init(id: String, text: String, otherOptions: [String] = []) {
+        self.id = id
         self.text = text
         self.otherOptions = otherOptions
-        self.hasMoreOptions = otherOptions != nil && otherOptions!.count > 0
     }
-
-    public var hashValue: Int {
-        return self.text.hashValue
-    }
-
-    public func equals(_ other: WSTag) -> Bool {
-        return self.text == other.text
-    }
-
-}
-
-public func == (lhs: WSTag, rhs: WSTag) -> Bool {
-    return lhs.equals(rhs)
 }
