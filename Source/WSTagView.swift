@@ -228,20 +228,17 @@ open class WSTagView: UIView {
     // MARK: - Gesture Recognizers
     @objc func handleTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
         if selected {
-            handleTapMoreOptions(sender)
             return
         }
         onDidRequestSelection?(self)
     }
 
     @objc func handleTapMoreOptions(_ sender: UITapGestureRecognizer) {
-        if !selected {
-            _ = becomeFirstResponder()
-        }
+        guard let otherOptions = self._tag.otherOptions, !otherOptions.isEmpty else { return }
         guard let parentViewcontroller = parentViewController else { return }
         let emailSelector = ItemSelectorViewController<String>()
         emailSelector.delegate = self
-        emailSelector.items = self._tag?.otherOptions ?? []
+        emailSelector.items = otherOptions
         ContextMenu.shared.show(
             sourceViewController: parentViewcontroller,
             viewController: emailSelector,
