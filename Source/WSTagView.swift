@@ -228,7 +228,7 @@ open class WSTagView: UIView {
     // MARK: - Gesture Recognizers
     @objc func handleTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
         if selected {
-            handleTapGestureRecognizer(sender)
+            handleTapMoreOptions(sender)
             return
         }
         onDidRequestSelection?(self)
