@@ -123,7 +123,9 @@ open class WSTagView: UIView {
         updateLabelText()
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureRecognizer))
+        let longPresssRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTapMoreOptions))
         addGestureRecognizer(tapRecognizer)
+        addGestureRecognizer(longPresssRecognizer)
         setNeedsLayout()
     }
 
@@ -226,12 +228,16 @@ open class WSTagView: UIView {
     // MARK: - Gesture Recognizers
     @objc func handleTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
         if selected {
+            handleTapGestureRecognizer(sender)
             return
         }
         onDidRequestSelection?(self)
     }
 
     @objc func handleTapMoreOptions(_ sender: UITapGestureRecognizer) {
+        if !selected {
+            _ = becomeFirstResponder()
+        }
         guard let parentViewcontroller = parentViewController else { return }
         let emailSelector = ItemSelectorViewController<String>()
         emailSelector.delegate = self
