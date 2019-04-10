@@ -116,7 +116,6 @@ open class WSTagView: UIView {
         addSubview(textLabel)
         if !tag.otherOptions.isEmpty {
             addSubview(arrow)
-            arrow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMoreOptions)))
         }
 
         self.displayText = tag.text
@@ -233,9 +232,10 @@ open class WSTagView: UIView {
         onDidRequestSelection?(self)
     }
 
-    @objc func handleTapMoreOptions(_ sender: UITapGestureRecognizer) {
+    @objc func handleTapMoreOptions(_ sender: UILongPressGestureRecognizer) {
         guard let otherOptions = self._tag?.otherOptions, !otherOptions.isEmpty else { return }
         guard let parentViewcontroller = parentViewController else { return }
+        guard sender.state == .began else { return }
         let emailSelector = ItemSelectorViewController<String>()
         emailSelector.delegate = self
         emailSelector.items = otherOptions
