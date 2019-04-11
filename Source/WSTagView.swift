@@ -237,7 +237,6 @@ open class WSTagView: UIView {
         guard let parentViewcontroller = parentViewController else { return }
         guard sender.state == .began else { return }
         let emailSelector = ItemSelectorViewController<String>()
-        onDidRequestSelection?(self)
         emailSelector.delegate = self
         emailSelector.items = otherOptions
         ContextMenu.shared.show(
